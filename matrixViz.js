@@ -13,7 +13,7 @@ export function matrixViz(canvas){
   
   const divs = 16;
   const grid_size = Math.floor(squareDim / divs);
-  canvas.width = squareDim - grid_size * 1.5;
+  canvas.width = squareDim - grid_size;
 
   function drawGrid() {
     for (let c = 0; c < divs; c++) {
@@ -33,7 +33,8 @@ export function matrixViz(canvas){
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
+  // const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
+  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size };
   const data = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
   let resultMatrix = { rows: operations.rows, cols: data.cols, data: [], x: data.x, y: operations.y };
 
@@ -51,18 +52,17 @@ export function matrixViz(canvas){
       }
     }
   }
-  // console.log(resultMatrix)
 
-  function drawUpstreamDeps(res_cell) {
+  function drawUpstreamSubtotals(res_cell) {
       const y_offset = grid_size * 0.55;
-      const x_offset = grid_size / 8;
+      const x_offset = grid_size / 16;
       const gap_width = grid_size / 8;
       ctx.fillStyle = "lightblue";
       ctx.font = `${grid_size / 4}px monospace`;
       for (const parent of res_cell.parents) {
         // draw subtotal text
         const subtotal = "$" + parent.val.toFixed(2);
-        ctx.fillText(subtotal, parent.x + x_offset, parent.y + grid_size * 0.6);
+        ctx.fillText(subtotal, parent.x + x_offset, parent.y + grid_size - grid_size / 10);
         const y = parent.y + y_offset;
         const lineY = y - grid_size / 8;
 
@@ -70,11 +70,12 @@ export function matrixViz(canvas){
         ctx.strokeStyle = "white"
         ctx.lineWidth = 1;
         ctx.beginPath();
-        ctx.moveTo(parent.x + gap_width, parent.y + grid_size / 3);
-        ctx.lineTo(parent.x + grid_size - gap_width, parent.y + grid_size / 3);
+        ctx.moveTo(parent.x + gap_width, parent.y + 2*grid_size / 3);
+        ctx.lineTo(parent.x + grid_size - gap_width, parent.y + 2*grid_size/3);
         ctx.stroke()
-
-        ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
+        
+        // draw subtotal lines
+        // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
         ctx.strokeStyle = "#FFF5";
         drawLine({x: parent.x + x_offset + grid_size * 0.5, y: y + grid_size / 16}, {x: res_cell.x + grid_size * 0.5, y: lineY});
       }
@@ -85,11 +86,12 @@ export function matrixViz(canvas){
       ctx.fillStyle = "white";
       ctx.font = `${grid_size / 4}px monospace`;
       const x = res_cell.parents[i].x + grid_size * 0.1;
-      const y = res_cell.parents[i].y + grid_size / 3.5;
+      const y = res_cell.parents[i].y + 2*grid_size / 3.5;
+      // draw data vector with a scalar multiplication sign within the operations matrix
       ctx.fillText(" X" + String(cell.val).padStart(3, " "), x, y);
 
       // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
-      ctx.strokeStyle = "FFF5";
+      ctx.strokeStyle = "#FFF5";
       drawLine({ x: x + grid_size * 0.7, y: y - 0.3 * grid_size }, { x: cell.x, y: cell.y })
     })
   }
@@ -124,12 +126,14 @@ export function matrixViz(canvas){
           drawDataFlow(res_cell, transpose(data.data)[c]);
         }, (c * 5 + r) * delay);
         setTimeout(() => {
-          drawUpstreamDeps(res_cell);
+          drawUpstreamSubtotals(res_cell);
         }, (c * 5 + r) * delay + delay * 0.5);
+        break
       }
+      break
     }
 
-    drawMatrix(operations, "prices", "orange", true);
+    // drawMatrix(operations, "prices", "orange", true);
   }
   draw();
   // setInterval(()=>draw(),100)
@@ -137,15 +141,15 @@ export function matrixViz(canvas){
     labels.forEach((label, index) => {
       //draw each label
       let x = matrix.x - grid_size * 0.75;
-      let y = matrix.y + grid_size * 0.3 + index * grid_size;
+      let y = matrix.y + grid_size / 1.5 + index * grid_size;
       ctx.fillText(label, x, y);
     })
   }
   function drawRowLabels(matrix, labels) {
     labels.forEach((label, index) => {
       //draw each label
-      let x = matrix.x + grid_size * 0.2 + index * grid_size;
-      let y = matrix.y + grid_size * -0.5;
+      let x = matrix.x + grid_size / 5 + index * grid_size;
+      let y = matrix.y + grid_size / -3;
       ctx.fillText(label, x, y);
     })
   }
@@ -159,26 +163,26 @@ export function matrixViz(canvas){
         cell.x = matrix.x + j * grid_size;
         cell.y = matrix.y + i * grid_size;
         if (name == "shopping lists") {
-          // cell.y += grid_size / 2.5;
-          // cell.x += grid_size / 4;
+          cell.y += grid_size / 2.5;
+          cell.x += grid_size / 4;
         } else if (name == "result"){
-          // cell.y += grid_size * 0.25;
-          // cell.x -= grid_size * 0.05;
+          cell.y += grid_size * 0.25;
+          cell.x -= grid_size * 0.05;
         }
-        // ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y);
-        ctx.fillText(prefix + stem, cell.x, cell.y);
+        ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y + grid_size/3);
+        // ctx.fillText(prefix + stem, cell.x, cell.y);
       });
     });
     if (name == "prices") {
       // create row vectors
       for (const r in matrix.data){
         ctx.strokeStyle = "white";
-        ctx.strokeRect(matrix.x, r * grid_size + matrix.y - grid_size / 3, grid_size * matrix.cols, grid_size);
+        ctx.strokeRect(matrix.x, r * grid_size + matrix.y, grid_size * matrix.cols, grid_size);
       }
     } else {
       ctx.strokeStyle = "white";
       for (const c in matrix.data[0]){
-        ctx.strokeRect(matrix.x + grid_size * c, matrix.y - grid_size / 3, grid_size, grid_size * matrix.rows)
+        ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
       }
     }
     // draw label text
@@ -216,10 +220,4 @@ export function matrixViz(canvas){
     ctx.stroke();
   }
 }
-
-// function test_drawLine(){
-//   const center = grid_size * divs / 2;
-//   drawLine({x: center, y: center}, {x: center + grid_size * 5, y: center});
-//   drawLine({x: center, y: center}, {x: center + grid_size * 5, y: center + grid_size * -5});
-// }
 

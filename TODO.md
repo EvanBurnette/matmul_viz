@@ -1,14 +1,18 @@
 # TODO
 P0:
-1. Click on an output cell to see only all of it's up upstream dependencies
+1. Add buttons to program
+1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. resize from the outer edges of the input matrices
     - figure out how to change pointer css based on coords in canvas
-1. Add buttons to program
-1. Add explanatory text to program
+1. Click on an output cell to see only all of it's up upstream dependencies
+1. Add storytelling to program
 
 P1:
 1. Add more colors using HSL so that we can have more visual signals for the user
 1. Fade other connections to 50% opacity while visualizing a single output cell
+1. Create Demo video
+1. Create retrospective video
+
 
 ## Done
 1. figure out why operations matrix is so small and make it consistently sized with the rest of the matrices
@@ -19,6 +23,7 @@ P1:
     1. 
 1. Create graph version of matmul
 1. Show the blue data flowing into the orange operations (this feature was working in an earlier version but now it is broken)
+1. Realign matrices to grid
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
