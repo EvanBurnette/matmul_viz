@@ -1,0 +1,10 @@
+body {
+  background: black;
+  display: grid;
+  place-items: center;
+}
+
+canvas {
+  background: #111;
+  border: solid #444 2px;
+}
