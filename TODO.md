@@ -1,6 +1,6 @@
 # TODO
 P0:
-1. Make vector outlines consistently colored (right now they start out as tranlucent white and then turn opaque white)
+1. Ship it!
 1. resize from the outer edges of the input matrices
     - figure out how to change pointer css based on coords in canvas
 1. Make the connection lines begin and end in places that allow the eye to more easily trace them
@@ -31,6 +31,7 @@ P1:
 1. Fix selection flash on mobile
 1. Click on an output cell to see only all of it's up upstream dependencies
 1. Allow user to select shopper columns to calculate the whole output column
+1. Make vector outlines consistently colored (right now they start out as tranlucent white and then turn opaque white)
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
