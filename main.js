@@ -7,5 +7,3 @@ document.querySelector('#app').innerHTML = `
 `
 
 matrixViz(document.querySelector("canvas"))
-
-// setupCounter(document.querySelector('#counter'))
