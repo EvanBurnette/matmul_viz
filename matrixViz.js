@@ -55,7 +55,7 @@ export function matrixViz(canvas, buttons={}){
       const y_offset = grid_size * 0.55;
       const x_offset = grid_size / 16;
       const gap_width = grid_size / 8;
-      ctx.fillStyle = "lightblue";
+      // ctx.fillStyle = "lightblue";
       ctx.font = `${grid_size / 4}px monospace`;
       for (const parent of res_cell.parents) {
         // draw subtotal text
@@ -174,26 +174,27 @@ export function matrixViz(canvas, buttons={}){
         // ctx.fillText(prefix + stem, cell.x, cell.y);
       });
     });
+    
+    ctx.lineWidth = 2;
     if (name == "prices") {
       // create row vectors
       for (const r in matrix.data){
+        
         ctx.strokeStyle = "white";
         ctx.strokeRect(matrix.x, r * grid_size + matrix.y, grid_size * matrix.cols, grid_size);
       }
     } else {
-      ctx.strokeStyle = "white";
       for (const c in matrix.data[0]){
+        // ctx.strokeStyle = "white";
         ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
       }
     }
     // draw label text
     ctx.fillStyle = color
     ctx.font = `${grid_size / 2}px monospace`;
+    ctx.fillText(name, matrix.x, matrix.y - grid_size * 1.25);
 
-    ctx.fillText(name, matrix.x, matrix.y - grid_size * 1.25)
-    ctx.fillStyle = 'grey';
-    if (name == "result") {return;}
-    
+    ctx.fillStyle = 'white';
   }
   function drawLine(start, end){
     ctx.lineWidth = 2;
