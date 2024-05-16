@@ -1,5 +1,6 @@
 # TODO
 P0:
+1. Make vector outlines consistently colored (right now they start out as tranlucent white and then turn opaque white)
 1. resize from the outer edges of the input matrices
     - figure out how to change pointer css based on coords in canvas
 1. Make the connection lines begin and end in places that allow the eye to more easily trace them
