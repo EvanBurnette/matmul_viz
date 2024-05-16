@@ -5,6 +5,7 @@ import { mean, result } from 'lodash';
 import { hslaToHexa } from './utils.js';
 
 export function matrixViz(canvas, buttons={}){
+  const shoppers_set = new Set(shoppers);
   const ctx = canvas.getContext('2d');
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
@@ -32,12 +33,12 @@ export function matrixViz(canvas, buttons={}){
 
   // Matrix definitions
   const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
-  const data = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
-  const resultMatrix = { rows: operations.rows, cols: data.cols, data: [], x: data.x, y: operations.y };
+  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
+  const resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
 
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
-  data.data = getMatrix(data.rows, data.cols, "data");
-  resultMatrix.data = getZeroMatrix(operations.rows, data.cols);
+  dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
+  resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
   const intermediateMatrices = [];
 
   function updateResultMatrix() {
@@ -45,7 +46,7 @@ export function matrixViz(canvas, buttons={}){
     for (let r = 0; r < resultMatrix.rows; r++) {
       for (let c = 0; c < resultMatrix.cols; c++) {
         // this is a dot product (element wise multiplication then a sum)
-        sumVec(elemWiseMult(transpose(data.data)[c], operations.data[r]), resultMatrix.data[r][c]);
+        sumVec(elemWiseMult(transpose(dataMatrix.data)[c], operations.data[r]), resultMatrix.data[r][c]);
       }
     }
   }
@@ -93,6 +94,21 @@ export function matrixViz(canvas, buttons={}){
     })
   }
 
+  function drawAllConnections() {
+    for (let r = 0; r < resultMatrix.rows; r++){
+      for (let c = 0; c < resultMatrix.cols; c++){
+        const delay = 1000;
+        const res_cell = resultMatrix.data[r][c];
+        setTimeout(() => {
+          drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
+        }, (c * 5 + r) * delay);
+        setTimeout(() => {
+          drawUpstreamSubtotals(res_cell);
+        }, (c * 5 + r) * delay + delay * 0.5);
+      }
+    }
+  }
+
   function draw() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     
@@ -104,9 +120,9 @@ export function matrixViz(canvas, buttons={}){
     drawRowLabels(operations, fruits);
 
     //draw data matrix
-    drawMatrix(data, "shopping lists", "#CCF", false);
-    drawColumnLabels(data, fruits);
-    drawRowLabels(data, shoppers);
+    drawMatrix(dataMatrix, "shopping lists", "#CCF", false);
+    drawColumnLabels(dataMatrix, fruits);
+    drawRowLabels(dataMatrix, shoppers);
 
     updateResultMatrix()
 
@@ -116,24 +132,9 @@ export function matrixViz(canvas, buttons={}){
     drawRowLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
 
-    registerShoppers({x: Math.floor((data.x + grid_size / 2) / grid_size), y: Math.floor((data.y + grid_size / 2) / grid_size) - 1}, data);
+    registerShoppers({x: Math.floor((dataMatrix.x + grid_size / 2) / grid_size), y: Math.floor((dataMatrix.y + grid_size / 2) / grid_size) - 1}, dataMatrix);
 
-    for (let r = 0; r < resultMatrix.rows; r++){
-      for (let c = 0; c < resultMatrix.cols; c++){
-        const delay = 1000;
-        const res_cell = resultMatrix.data[r][c];
-        setTimeout(() => {
-          drawDataFlow(res_cell, transpose(data.data)[c]);
-        }, (c * 5 + r) * delay);
-        setTimeout(() => {
-          drawUpstreamSubtotals(res_cell);
-        }, (c * 5 + r) * delay + delay * 0.5);
-        break
-      }
-      // break
-    }
-
-    // drawMatrix(operations, "prices", "orange", true);
+    // drawAllConnections();
   }
   draw();
   // setInterval(()=>draw(),100)
@@ -240,8 +241,8 @@ export function matrixViz(canvas, buttons={}){
     registerShoppers({x: grid_x, y: grid_y - 1}, matrix);
     for (let r = 0; r < matrix.rows; r++) {
       for (let c = 0; c < matrix.cols; c++) {
-        const key = (r + grid_x) + ',' + (c + grid_y);
-        buttons[key] = key;
+        const key = (c + grid_x) + ',' + (r + grid_y);
+        buttons[key] = [c, r];
       }
     }
     console.log(buttons)
@@ -260,7 +261,15 @@ export function matrixViz(canvas, buttons={}){
     const [gridX, gridY] = calculateGridCoords(e);
     const key = gridX + ',' + gridY;
     if (key in buttons) {
-      console.log(`found key ${key}, val is ${buttons[key]}`);
+      if (shoppers_set.has(buttons[key])){
+        console.log(buttons[key])
+      } else {
+        const [c, r] = buttons[key];
+        const res_cell = resultMatrix.data[r][c];
+        draw();
+        drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
+        drawUpstreamSubtotals(res_cell);
+      }
     }
   })
   document.addEventListener('mousemove', (e)=>{

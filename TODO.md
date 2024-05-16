@@ -1,6 +1,5 @@
 # TODO
 P0:
-1. Allow user to select output cell to visualize
 1. Allow user to select shopper columns to calculate the whole output column
 1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. resize from the outer edges of the input matrices
@@ -28,6 +27,7 @@ P1:
 1. Show the blue data flowing into the orange operations (this feature was working in an earlier version but now it is broken)
 1. Realign matrices to grid
 1. Add buttons to program
+1. Allow user to select output cell to visualize
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
