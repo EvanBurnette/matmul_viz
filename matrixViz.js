@@ -263,10 +263,17 @@ export function matrixViz(canvas, buttons={}){
     if (key in buttons) {
       if (shoppers_set.has(buttons[key])){
         console.log(buttons[key])
+        draw();
+        const c = shoppers.indexOf(buttons[key]);
+        for (let r = 0; r < resultMatrix.rows; r++){
+          const res_cell = resultMatrix.data[r][c];
+          drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
+          drawUpstreamSubtotals(res_cell);
+        }
       } else {
+        draw();
         const [c, r] = buttons[key];
         const res_cell = resultMatrix.data[r][c];
-        draw();
         drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
         drawUpstreamSubtotals(res_cell);
       }

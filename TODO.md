@@ -1,10 +1,8 @@
 # TODO
 P0:
-1. Allow user to select shopper columns to calculate the whole output column
-1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. resize from the outer edges of the input matrices
     - figure out how to change pointer css based on coords in canvas
-1. Click on an output cell to see only all of it's up upstream dependencies
+1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. Add storytelling to program
 
 P1:
@@ -14,6 +12,7 @@ P1:
 1. Create Demo video
 1. Create retrospective video
 1. Make it work on mobile (i.e. touch controls)
+1. Allow users to select first the data vector then the operation row to get the result matrix cell
 
 
 ## Done
@@ -28,6 +27,9 @@ P1:
 1. Realign matrices to grid
 1. Add buttons to program
 1. Allow user to select output cell to visualize
+1. Fix selection flash on mobile
+1. Click on an output cell to see only all of it's up upstream dependencies
+1. Allow user to select shopper columns to calculate the whole output column
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
