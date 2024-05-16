@@ -1,12 +1,10 @@
 import { getMatrix, fruits, shoppers, stores, Node, transpose, getZeroMatrix, elemWiseMult, sumVec } from "./matrixData.js";
 
-import { mean } from 'lodash';
+import { mean, result } from 'lodash';
 
 import { hslaToHexa } from './utils.js';
 
-// document.addEventListener('DOMContentLoaded', function () {
-export function matrixViz(canvas){
-  // const canvas = document.getElementById('matrixCanvas');
+export function matrixViz(canvas, buttons={}){
   const ctx = canvas.getContext('2d');
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
@@ -33,10 +31,9 @@ export function matrixViz(canvas){
   }
 
   // Matrix definitions
-  // const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size };
+  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
   const data = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
-  let resultMatrix = { rows: operations.rows, cols: data.cols, data: [], x: data.x, y: operations.y };
+  const resultMatrix = { rows: operations.rows, cols: data.cols, data: [], x: data.x, y: operations.y };
 
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
   data.data = getMatrix(data.rows, data.cols, "data");
@@ -99,7 +96,7 @@ export function matrixViz(canvas){
   function draw() {
     ctx.clearRect(0,0,canvas.width, canvas.height);
     
-    drawGrid();
+    // drawGrid();
 
     //draw ops matrix
     drawMatrix(operations, "prices", "orange", true);
@@ -117,10 +114,13 @@ export function matrixViz(canvas){
     drawMatrix(resultMatrix, "result", "aqua")
     drawColumnLabels(resultMatrix, stores);
     drawRowLabels(resultMatrix, shoppers);
+    registerButtons(resultMatrix);
+
+    registerShoppers({x: Math.floor((data.x + grid_size / 2) / grid_size), y: Math.floor((data.y + grid_size / 2) / grid_size) - 1}, data);
 
     for (let r = 0; r < resultMatrix.rows; r++){
       for (let c = 0; c < resultMatrix.cols; c++){
-        const delay = 100;
+        const delay = 1000;
         const res_cell = resultMatrix.data[r][c];
         setTimeout(() => {
           drawDataFlow(res_cell, transpose(data.data)[c]);
@@ -130,7 +130,7 @@ export function matrixViz(canvas){
         }, (c * 5 + r) * delay + delay * 0.5);
         break
       }
-      break
+      // break
     }
 
     // drawMatrix(operations, "prices", "orange", true);
@@ -219,5 +219,58 @@ export function matrixViz(canvas){
     // ctx.strokeStyle = "blue";
     ctx.stroke();
   }
+  // let buttons = {};
+  function resetButtons() {
+    buttons = {};
+  }
+  
+  function registerShoppers(grid_start, matrix){
+    for (let i = 0; i < matrix.data[0].length; i++){
+      const key = (i + grid_start.x) + ',' + grid_start.y;
+      buttons[key] = shoppers[i];
+    }
+  }
+  function registerButtons(matrix){
+    resetButtons();
+
+    const grid_y = Math.floor((matrix.y + grid_size / 2) / grid_size);
+    const grid_x = Math.floor((matrix.x + grid_size / 2) / grid_size);
+
+    const start = {x: matrix.x, y: matrix.y};
+    registerShoppers({x: grid_x, y: grid_y - 1}, matrix);
+    for (let r = 0; r < matrix.rows; r++) {
+      for (let c = 0; c < matrix.cols; c++) {
+        const key = (r + grid_x) + ',' + (c + grid_y);
+        buttons[key] = key;
+      }
+    }
+    console.log(buttons)
+  }
+  function calculateGridCoords(e){
+    const canvasRect = canvas.getBoundingClientRect();
+    const canvasX = canvasRect.left;
+    const canvasY = canvasRect.top;
+    const x = e.clientX - canvasX;
+    const y = e.clientY - canvasY;
+    const gridX = Math.floor(x / grid_size);
+    const gridY = Math.floor(y / grid_size);
+    return [gridX, gridY];
+  }
+  document.addEventListener('click', (e)=>{
+    const [gridX, gridY] = calculateGridCoords(e);
+    const key = gridX + ',' + gridY;
+    if (key in buttons) {
+      console.log(`found key ${key}, val is ${buttons[key]}`);
+    }
+  })
+  document.addEventListener('mousemove', (e)=>{
+    const [gridX, gridY] = calculateGridCoords(e);
+    const key = gridX + ',' + gridY;
+    if (key in buttons) {
+      canvas.style.cursor = "pointer";
+    } else {
+      canvas.style.cursor = "default";
+    }
+  })
 }
 
