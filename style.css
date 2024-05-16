@@ -8,3 +8,13 @@ canvas {
   background: #111;
   border: solid #444 2px;
 }
+
+canvas {
+  user-select: none; /* Standard CSS property to prevent selection */
+  -webkit-user-select: none; /* For WebKit browsers */
+}
+
+canvas {
+  -webkit-tap-highlight-color: transparent; /* For WebKit browsers */
+  tap-highlight-color: transparent; /* Standard CSS property, if supported */
+}
