@@ -97,15 +97,6 @@ export function getMatrix(rows = 5, cols = 5, type = "data") {
     }
   }
 
-  // function dotprod(vec1, vec2){
-  //   if (vec1.length != vec2.length) {
-  //     throw new Error(`vectors are not equal length ${vec1.length} != ${vec2.length}`)
-  //   }
-  //   const res_node = new Node(0);
-  //   sumVec(elemWiseMult(vec1, vec2))
-  //   return res_node;
-  // }
-
   function test_dotProd(){
     const vec1 = [new Node(1), new Node(2), new Node(3)];
     const vec2 = [new Node(1), new Node(2), new Node(3)];
