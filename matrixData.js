@@ -33,7 +33,7 @@ export function getMatrix(rows = 5, cols = 5, type = "data") {
       return row.map(val => new Node(val));
     }))
   }
-    return trimMatrix(matrix, cols, rows)
+    return trimMatrix(matrix, rows, cols)
   }
   function test() {
     console.log(getMatrix(2, 3, "data"))
