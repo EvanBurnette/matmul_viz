@@ -32,8 +32,8 @@ export function matrixViz(canvas, buttons={}){
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
-  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
+  const operations = { rows: 5, cols: 1, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
+  const dataMatrix = { rows: 1, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
   const resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
 
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
@@ -116,20 +116,20 @@ export function matrixViz(canvas, buttons={}){
 
     //draw ops matrix
     drawMatrix(operations, "prices", "orange", true);
-    drawColumnLabels(operations, stores);
-    drawRowLabels(operations, fruits);
+    drawRowLabels(operations, stores);
+    drawColumnLabels(operations, fruits);
 
     //draw data matrix
     drawMatrix(dataMatrix, "shopping lists", "#CCF", false);
-    drawColumnLabels(dataMatrix, fruits);
-    drawRowLabels(dataMatrix, shoppers);
+    drawRowLabels(dataMatrix, fruits);
+    drawColumnLabels(dataMatrix, shoppers);
 
     updateResultMatrix()
 
     //draw result matrix
     drawMatrix(resultMatrix, "result", "aqua")
-    drawColumnLabels(resultMatrix, stores);
-    drawRowLabels(resultMatrix, shoppers);
+    drawRowLabels(resultMatrix, stores);
+    drawColumnLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
 
     registerShoppers({x: Math.floor((dataMatrix.x + grid_size / 2) / grid_size), y: Math.floor((dataMatrix.y + grid_size / 2) / grid_size) - 1}, dataMatrix);
@@ -139,20 +139,27 @@ export function matrixViz(canvas, buttons={}){
   draw();
   // setInterval(()=>draw(),100)
   function drawColumnLabels(matrix, labels) {
-    labels.forEach((label, index) => {
-      //draw each label
-      let x = matrix.x - grid_size * 0.75;
-      let y = matrix.y + grid_size / 1.5 + index * grid_size;
+    const cols = matrix.cols;
+    for (let i = 0; i < cols; i++){
+      // draw each label
+      const label = labels[i];
+      let x = matrix.x + grid_size / 5 + i * grid_size;
+      let y = matrix.y + grid_size / -3;
+      // let x = matrix.x - grid_size * 0.75;
+      // let y = matrix.y + grid_size / 1.5 + i * grid_size;
       ctx.fillText(label, x, y);
-    })
+    }
   }
   function drawRowLabels(matrix, labels) {
-    labels.forEach((label, index) => {
+    const rows = matrix.rows;
+    // labels.forEach((label, index) => {
+    for (let i = 0; i < rows; i++){
       //draw each label
-      let x = matrix.x + grid_size / 5 + index * grid_size;
-      let y = matrix.y + grid_size / -3;
+      const label = labels[i];
+      let x = matrix.x - grid_size * 0.75;
+      let y = matrix.y + grid_size / 1.5 + i * grid_size;
       ctx.fillText(label, x, y);
-    })
+    }
   }
   function drawMatrix(matrix, name, color, cost="false") {
     const prefix = cost ? "$" : "";
@@ -174,7 +181,7 @@ export function matrixViz(canvas, buttons={}){
         // ctx.fillText(prefix + stem, cell.x, cell.y);
       });
     });
-    
+
     ctx.lineWidth = 2;
     if (name == "prices") {
       // create row vectors
