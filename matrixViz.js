@@ -4,12 +4,12 @@ import { mean, result } from 'lodash';
 
 import { hslaToHexa } from './utils.js';
 
-export function matrixViz(canvas, buttons={}){
+export function matrixViz(canvas, buttons = {}) {
   const shoppers_set = new Set(shoppers);
   const ctx = canvas.getContext('2d');
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
-  
+
   const divs = 16;
   const grid_size = Math.floor(squareDim / divs);
   canvas.width = squareDim - grid_size;
@@ -51,31 +51,31 @@ export function matrixViz(canvas, buttons={}){
   }
 
   function drawUpstreamSubtotals(res_cell) {
-      const y_offset = grid_size * 0.55;
-      const x_offset = grid_size / 16;
-      const gap_width = grid_size / 8;
-      // ctx.fillStyle = "lightblue";
-      ctx.font = `${grid_size / 4}px monospace`;
-      for (const parent of res_cell.parents) {
-        // draw subtotal text
-        const subtotal = "$" + parent.val.toFixed(2);
-        ctx.fillText(subtotal, parent.x + x_offset, parent.y + grid_size - grid_size / 10);
-        const y = parent.y + y_offset;
-        const lineY = y - grid_size / 8;
+    const y_offset = grid_size * 0.55;
+    const x_offset = grid_size / 16;
+    const gap_width = grid_size / 8;
+    // ctx.fillStyle = "lightblue";
+    ctx.font = `${grid_size / 4}px monospace`;
+    for (const parent of res_cell.parents) {
+      // draw subtotal text
+      const subtotal = "$" + parent.val.toFixed(2);
+      ctx.fillText(subtotal, parent.x + x_offset, parent.y + grid_size - grid_size / 10);
+      const y = parent.y + y_offset;
+      const lineY = y - grid_size / 8;
 
-        //draw equals line
-        ctx.strokeStyle = "white"
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(parent.x + gap_width, parent.y + 2*grid_size / 3);
-        ctx.lineTo(parent.x + grid_size - gap_width, parent.y + 2*grid_size/3);
-        ctx.stroke()
-        
-        // draw subtotal lines
-        // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
-        ctx.strokeStyle = "#FFF5";
-        drawLine({x: parent.x + x_offset + grid_size * 0.5, y: y + grid_size / 2.75}, {x: res_cell.x + grid_size * 0.6, y: lineY + grid_size / 4});
-      }
+      //draw equals line
+      ctx.strokeStyle = "white"
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(parent.x + gap_width, parent.y + 2 * grid_size / 3);
+      ctx.lineTo(parent.x + grid_size - gap_width, parent.y + 2 * grid_size / 3);
+      ctx.stroke()
+
+      // draw subtotal lines
+      // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
+      ctx.strokeStyle = "#FFF5";
+      drawLine({ x: parent.x + x_offset + grid_size * 0.5, y: y + grid_size / 2.75 }, { x: res_cell.x + grid_size * 0.6, y: lineY + grid_size / 4 });
+    }
   }
 
   function drawDataFlow(res_cell, dataVec) {
@@ -83,7 +83,7 @@ export function matrixViz(canvas, buttons={}){
       ctx.fillStyle = "white";
       ctx.font = `${grid_size / 4}px monospace`;
       const x = res_cell.parents[i].x + grid_size * 0.1;
-      const y = res_cell.parents[i].y + 2*grid_size / 3.5;
+      const y = res_cell.parents[i].y + 2 * grid_size / 3.5;
       // draw data vector with a scalar multiplication sign within the operations matrix
       ctx.fillText(" X" + String(cell.val).padStart(3, " "), x, y);
 
@@ -94,8 +94,8 @@ export function matrixViz(canvas, buttons={}){
   }
 
   function drawAllConnections() {
-    for (let r = 0; r < resultMatrix.rows; r++){
-      for (let c = 0; c < resultMatrix.cols; c++){
+    for (let r = 0; r < resultMatrix.rows; r++) {
+      for (let c = 0; c < resultMatrix.cols; c++) {
         const delay = 1000;
         const res_cell = resultMatrix.data[r][c];
         setTimeout(() => {
@@ -109,8 +109,8 @@ export function matrixViz(canvas, buttons={}){
   }
 
   function draw() {
-    ctx.clearRect(0,0,canvas.width, canvas.height);
-    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
     // drawGrid();
 
     //draw ops matrix
@@ -131,7 +131,7 @@ export function matrixViz(canvas, buttons={}){
     drawColumnLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
 
-    registerShoppers({x: Math.floor((dataMatrix.x + grid_size / 2) / grid_size), y: Math.floor((dataMatrix.y + grid_size / 2) / grid_size) - 1}, dataMatrix);
+    registerShoppers({ x: Math.floor((dataMatrix.x + grid_size / 2) / grid_size), y: Math.floor((dataMatrix.y + grid_size / 2) / grid_size) - 1 }, dataMatrix);
 
     // drawAllConnections();
   }
@@ -139,7 +139,7 @@ export function matrixViz(canvas, buttons={}){
   // setInterval(()=>draw(),100)
   function drawColumnLabels(matrix, labels) {
     const cols = matrix.cols;
-    for (let i = 0; i < cols; i++){
+    for (let i = 0; i < cols; i++) {
       // draw each label
       const label = labels[i];
       let x = matrix.x + grid_size / 5 + i * grid_size;
@@ -152,7 +152,7 @@ export function matrixViz(canvas, buttons={}){
   function drawRowLabels(matrix, labels) {
     const rows = matrix.rows;
     // labels.forEach((label, index) => {
-    for (let i = 0; i < rows; i++){
+    for (let i = 0; i < rows; i++) {
       //draw each label
       const label = labels[i];
       let x = matrix.x - grid_size * 0.75;
@@ -160,7 +160,7 @@ export function matrixViz(canvas, buttons={}){
       ctx.fillText(label, x, y);
     }
   }
-  function drawMatrix(matrix, name, color, cost="false") {
+  function drawMatrix(matrix, name, color, cost = "false") {
     const prefix = cost ? "$" : "";
     ctx.fillStyle = color;
     ctx.font = cost ? `${grid_size / 4}px monospace` : `${grid_size / 2}px monospace`;
@@ -172,11 +172,11 @@ export function matrixViz(canvas, buttons={}){
         if (name == "shopping lists") {
           cell.y += grid_size / 2.5;
           cell.x += grid_size / 4;
-        } else if (name == "result"){
+        } else if (name == "result") {
           cell.y += grid_size * 0.25;
           cell.x -= grid_size * 0.05;
         }
-        ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y + grid_size/3);
+        ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y + grid_size / 3);
         // ctx.fillText(prefix + stem, cell.x, cell.y);
       });
     });
@@ -184,13 +184,13 @@ export function matrixViz(canvas, buttons={}){
     ctx.lineWidth = 2;
     if (name == "prices") {
       // create row vectors
-      for (const r in matrix.data){
-        
+      for (const r in matrix.data) {
+
         ctx.strokeStyle = "white";
         ctx.strokeRect(matrix.x, r * grid_size + matrix.y, grid_size * matrix.cols, grid_size);
       }
     } else {
-      for (const c in matrix.data[0]){
+      for (const c in matrix.data[0]) {
         // ctx.strokeStyle = "white";
         ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
       }
@@ -202,7 +202,7 @@ export function matrixViz(canvas, buttons={}){
 
     ctx.fillStyle = 'white';
   }
-  function drawLine(start, end){
+  function drawLine(start, end) {
     ctx.lineWidth = 2;
     const horizontal = Math.abs(start.y - end.y) <= grid_size;
     ctx.beginPath();
@@ -231,20 +231,20 @@ export function matrixViz(canvas, buttons={}){
   function resetButtons() {
     buttons = {};
   }
-  
-  function registerShoppers(grid_start, matrix){
-    for (let i = 0; i < matrix.data[0].length; i++){
+
+  function registerShoppers(grid_start, matrix) {
+    for (let i = 0; i < matrix.data[0].length; i++) {
       const key = (i + grid_start.x) + ',' + grid_start.y;
       buttons[key] = shoppers[i];
     }
   }
-  function registerButtons(matrix){
+  function registerButtons(matrix) {
     resetButtons();
 
     const grid_y = Math.floor((matrix.y + grid_size / 2) / grid_size);
     const grid_x = Math.floor((matrix.x + grid_size / 2) / grid_size);
 
-    registerShoppers({x: grid_x, y: grid_y - 1}, matrix);
+    registerShoppers({ x: grid_x, y: grid_y - 1 }, matrix);
     for (let r = 0; r < matrix.rows; r++) {
       for (let c = 0; c < matrix.cols; c++) {
         const key = (c + grid_x) + ',' + (r + grid_y);
@@ -252,7 +252,7 @@ export function matrixViz(canvas, buttons={}){
       }
     }
   }
-  function calculateGridCoords(e){
+  function calculateGridCoords(e) {
     const canvasRect = canvas.getBoundingClientRect();
     const canvasX = canvasRect.left;
     const canvasY = canvasRect.top;
@@ -262,15 +262,15 @@ export function matrixViz(canvas, buttons={}){
     const gridY = Math.floor(y / grid_size);
     return [gridX, gridY];
   }
-  document.addEventListener('click', (e)=>{
+  document.addEventListener('click', (e) => {
     const [gridX, gridY] = calculateGridCoords(e);
     const key = gridX + ',' + gridY;
     if (key in buttons) {
-      if (shoppers_set.has(buttons[key])){
+      if (shoppers_set.has(buttons[key])) {
         // draw dependencies for an entire output column
         draw();
         const c = shoppers.indexOf(buttons[key]);
-        for (let r = 0; r < resultMatrix.rows; r++){
+        for (let r = 0; r < resultMatrix.rows; r++) {
           const res_cell = resultMatrix.data[r][c];
           drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
           drawUpstreamSubtotals(res_cell);
@@ -288,14 +288,58 @@ export function matrixViz(canvas, buttons={}){
       draw();
     }
   })
-  document.addEventListener('mousemove', (e)=>{
+  document.addEventListener('mousemove', (e) => {
     const [gridX, gridY] = calculateGridCoords(e);
     const key = gridX + ',' + gridY;
     if (key in buttons) {
       canvas.style.cursor = "pointer";
-    } else {
-      canvas.style.cursor = "default";
+    }
+    else {
+      const pos = getMousePos(e);
+      canvas.style.cursor = 'default';
+      drawHoverCursor(pos, dataMatrix);
+      drawHoverCursor(pos, operations);
     }
   })
+
+  function drawHoverCursor(pos, matrix){
+    let edgeX = matrix.x + matrix.cols * grid_size;
+    let edgeY = matrix.y + matrix.rows * grid_size;
+
+    let nearEdgeX = Math.abs(pos.x - edgeX) <= grid_size / 5;
+    let nearEdgeY = Math.abs(pos.y - edgeY) <= grid_size / 5;
+
+    if (inBounds(matrix, pos)) {
+      if (nearEdgeY && nearEdgeX) {
+        canvas.style.cursor = 'nwse-resize';
+      } else if (nearEdgeY) {
+        canvas.style.cursor = 'ns-resize';
+      } else if (nearEdgeX) {
+        canvas.style.cursor = 'ew-resize';
+      }
+    }
+  }
+
+  function getMousePos(e) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    };
+  }
+
+  function inBounds(matrix, pos) {
+    const leftBound = matrix.x;
+    const topBound = matrix.y;
+    const rightBound = matrix.x + grid_size * matrix.cols + grid_size / 5;
+    const bottomBound = matrix.y + grid_size * matrix.rows + grid_size / 5;
+
+    if (pos.x < leftBound) return false;
+    if (pos.y < topBound) return false;
+    if (pos.x > rightBound) return false;
+    if (pos.y > bottomBound) return false;
+
+    return true;
+  }
 }
 

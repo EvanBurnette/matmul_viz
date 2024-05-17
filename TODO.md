@@ -1,9 +1,8 @@
 # TODO
 P0:
 1. resize from the outer edges of the input matrices
-    - figure out how to change pointer css based on coords in canvas
-1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. Add storytelling to program
+1. Add license
 
 P1:
 1. Flash the background of the button to aid intuition
@@ -13,6 +12,8 @@ P1:
 1. Create retrospective video
 1. Make it work on mobile (i.e. touch controls)
 1. Allow users to select first the data vector then the operation row to get the result matrix cell
+1. Animate the drawing of the graph
+1. Highlight the inputs and outputs on hover?
 
 
 ## Done
@@ -21,7 +22,6 @@ P1:
 1. Create node data structure for each cell of the matrix
     1. value
     1. parents
-    1. 
 1. Create graph version of matmul
 1. Show the blue data flowing into the orange operations (this feature was working in an earlier version but now it is broken)
 1. Realign matrices to grid
@@ -34,6 +34,8 @@ P1:
 1. Columns and rows when setting in data matrix are not working right. (Was wrong order in function call: trimMatrix(matrix, rows, cols) vs trimMatrix(matrix, cols, rows))
 1. Ship it!
 1. Draw fewer emoji labels when matrices are smaller
+1. Make the connection lines begin and end in places that allow the eye to more easily trace them
+1. figure out how to change pointer css based on coords in canvas
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
