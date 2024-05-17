@@ -39,7 +39,6 @@ export function matrixViz(canvas, buttons={}){
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
   dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
   resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
-  const intermediateMatrices = [];
 
   function updateResultMatrix() {
     // this is our matmul
