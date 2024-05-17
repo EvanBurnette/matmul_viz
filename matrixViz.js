@@ -32,8 +32,8 @@ export function matrixViz(canvas, buttons={}){
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 1, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
-  const dataMatrix = { rows: 1, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
+  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
+  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
   const resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
 
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
@@ -74,7 +74,7 @@ export function matrixViz(canvas, buttons={}){
         // draw subtotal lines
         // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
         ctx.strokeStyle = "#FFF5";
-        drawLine({x: parent.x + x_offset + grid_size * 0.5, y: y + grid_size / 16}, {x: res_cell.x + grid_size * 0.5, y: lineY});
+        drawLine({x: parent.x + x_offset + grid_size * 0.5, y: y + grid_size / 2.75}, {x: res_cell.x + grid_size * 0.6, y: lineY + grid_size / 4});
       }
   }
 
@@ -89,7 +89,7 @@ export function matrixViz(canvas, buttons={}){
 
       // ctx.strokeStyle = hslaToHexa(0 + 360 * Math.random(), 100, 80, 25);
       ctx.strokeStyle = "#FFF5";
-      drawLine({ x: x + grid_size * 0.7, y: y - 0.3 * grid_size }, { x: cell.x, y: cell.y })
+      drawLine({ x: x + grid_size * 0.75, y: y - 0.15 * grid_size }, { x: cell.x, y: cell.y + grid_size * 0.15 })
     })
   }
 
@@ -244,7 +244,6 @@ export function matrixViz(canvas, buttons={}){
     const grid_y = Math.floor((matrix.y + grid_size / 2) / grid_size);
     const grid_x = Math.floor((matrix.x + grid_size / 2) / grid_size);
 
-    const start = {x: matrix.x, y: matrix.y};
     registerShoppers({x: grid_x, y: grid_y - 1}, matrix);
     for (let r = 0; r < matrix.rows; r++) {
       for (let c = 0; c < matrix.cols; c++) {
@@ -252,7 +251,6 @@ export function matrixViz(canvas, buttons={}){
         buttons[key] = [c, r];
       }
     }
-    console.log(buttons)
   }
   function calculateGridCoords(e){
     const canvasRect = canvas.getBoundingClientRect();
@@ -269,7 +267,7 @@ export function matrixViz(canvas, buttons={}){
     const key = gridX + ',' + gridY;
     if (key in buttons) {
       if (shoppers_set.has(buttons[key])){
-        console.log(buttons[key])
+        // draw dependencies for an entire output column
         draw();
         const c = shoppers.indexOf(buttons[key]);
         for (let r = 0; r < resultMatrix.rows; r++){
@@ -278,12 +276,16 @@ export function matrixViz(canvas, buttons={}){
           drawUpstreamSubtotals(res_cell);
         }
       } else {
+        // draw dependencies for a single output cell
         draw();
         const [c, r] = buttons[key];
         const res_cell = resultMatrix.data[r][c];
         drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
         drawUpstreamSubtotals(res_cell);
       }
+    } else {
+      // reset drawing to init
+      draw();
     }
   })
   document.addEventListener('mousemove', (e)=>{
