@@ -1,6 +1,5 @@
 # TODO
 P0:
-1. Ship it!
 1. resize from the outer edges of the input matrices
     - figure out how to change pointer css based on coords in canvas
 1. Make the connection lines begin and end in places that allow the eye to more easily trace them
@@ -14,6 +13,7 @@ P1:
 1. Create retrospective video
 1. Make it work on mobile (i.e. touch controls)
 1. Allow users to select first the data vector then the operation row to get the result matrix cell
+1. Ship it!
 
 
 ## Done
