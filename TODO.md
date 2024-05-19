@@ -1,6 +1,9 @@
 # TODO
 P0:
 1. resize from the outer edges of the input matrices
+    - make matrices editable
+    - when the size of a matrix changes, recompute result and redraw
+    
 1. Add storytelling to program
 1. Add license
 
