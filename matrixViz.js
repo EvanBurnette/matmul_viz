@@ -22,7 +22,7 @@ export function matrixViz(canvas, buttons = {}) {
       ctx.lineTo(grid_size * c, canvas.height);
       ctx.stroke();
     }
-    for (let r = 0; r < divs; r++) {
+    for (let r = 0; r < divs + 1; r++) {
       ctx.strokeStyle = "#AA3";
       ctx.beginPath();
       ctx.moveTo(0, grid_size * r, 0);
@@ -34,13 +34,21 @@ export function matrixViz(canvas, buttons = {}) {
   // Matrix definitions
   const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
   const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
+
   const resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
+  let resColor = "aqua";
 
   operations.data = getMatrix(operations.rows, operations.cols, "ops");
   dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
   resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
 
   function updateResultMatrix() {
+    if (operations.cols != dataMatrix.rows) {
+      console.log(`number of shopping list items (data rows) must match number of prices columns (operations columns)\n${dataMatrix.rows} != ${operations.cols}`);
+      resColor = "red";
+      return
+    }
+
     // this is our matmul
     for (let r = 0; r < resultMatrix.rows; r++) {
       for (let c = 0; c < resultMatrix.cols; c++) {
@@ -96,7 +104,7 @@ export function matrixViz(canvas, buttons = {}) {
   function drawAllConnections() {
     for (let r = 0; r < resultMatrix.rows; r++) {
       for (let c = 0; c < resultMatrix.cols; c++) {
-        const delay = 1000;
+        const delay = 100;
         const res_cell = resultMatrix.data[r][c];
         setTimeout(() => {
           drawDataFlow(res_cell, transpose(dataMatrix.data)[c]);
@@ -123,10 +131,10 @@ export function matrixViz(canvas, buttons = {}) {
     drawRowLabels(dataMatrix, fruits);
     drawColumnLabels(dataMatrix, shoppers);
 
-    updateResultMatrix()
+    updateResultMatrix();
 
     //draw result matrix
-    drawMatrix(resultMatrix, "result", "aqua")
+    drawMatrix(resultMatrix, "result", resColor)
     drawRowLabels(resultMatrix, stores);
     drawColumnLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
@@ -136,7 +144,7 @@ export function matrixViz(canvas, buttons = {}) {
     // drawAllConnections();
   }
   draw();
-  // setInterval(()=>draw(),100)
+
   function drawColumnLabels(matrix, labels) {
     const cols = matrix.cols;
     for (let i = 0; i < cols; i++) {
@@ -177,7 +185,6 @@ export function matrixViz(canvas, buttons = {}) {
           cell.x -= grid_size * 0.05;
         }
         ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y + grid_size / 3);
-        // ctx.fillText(prefix + stem, cell.x, cell.y);
       });
     });
 
@@ -191,7 +198,7 @@ export function matrixViz(canvas, buttons = {}) {
       }
     } else {
       for (const c in matrix.data[0]) {
-        // ctx.strokeStyle = "white";
+        ctx.strokeStyle = "white";
         ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
       }
     }
@@ -212,7 +219,6 @@ export function matrixViz(canvas, buttons = {}) {
       const res = {
         x: start.x,
         y: horizontal ? start.y + diffx / 8 : Math.round(mean([start.y, end.y]))
-        // y: horizontal ? start.y - grid_size / 2 : Math.round(mean([start.y, end.y]))
       };
       return res;
     })();
@@ -224,10 +230,9 @@ export function matrixViz(canvas, buttons = {}) {
       return res;
     })();
     ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
-    // ctx.strokeStyle = "blue";
     ctx.stroke();
   }
-  // let buttons = {};
+
   function resetButtons() {
     buttons = {};
   }
@@ -319,6 +324,8 @@ export function matrixViz(canvas, buttons = {}) {
       }
     }
   }
+
+
 
   function getMousePos(e) {
     const rect = canvas.getBoundingClientRect();
