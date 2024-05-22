@@ -3,11 +3,20 @@ P0:
 1. resize from the outer edges of the input matrices
     - make matrices editable
     - when the size of a matrix changes, recompute result and redraw
-    
+        - There are many ways to approach this and here's a short list:
+            1. Use global "resizing" var like in the reference app (would this be okay with 2 resizable matrices?)
+            1. Use a callback function so that when a matrix updates itself, it can redraw the whole app (object oriented)
+            1. Redraw the screen at a high refresh rate so that any changes are instantly reflected (but this would require changes to the way that connections are drawn)
+            1. Add a reactive framework (like svelte) to help manage state
+            1. Add an event listener on click from the hover handler and remove it on mouse up per resizable component matrix
+
+1. Brand the app at the top so people can share it more easily
+1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 1. Add storytelling to program
 1. Add license
 
 P1:
+1. Report zero width character broken for emojis on chrome canvas
 1. Flash the background of the button to aid intuition
 1. Add more colors using HSL so that we can have more visual signals for the user
 1. Fade other connections to 50% opacity while visualizing a single output cell
