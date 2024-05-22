@@ -1,7 +1,6 @@
-export const shoppers = "🧑🏾‍🎤 🤖 👮 👷 🐒".split(' ');
+export const shoppers = "🧘 🤖 👮 👷 🐒".split(' ');
 export const fruits = "🍌 🍏 🍉 🍍 🫐".split(' ');
 export const stores = "🛒 🌺 🌱 🎯 🐖".split(' ');
-
 // Data
 const groceryOrders = {
   //  🧑🏾‍🎤 🤖 👮 👷 👨🏻‍💻
