@@ -1,7 +1,5 @@
 # TODO
 P0:
-1. Brand the app at the top so people can share it more easily
-1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 1. Add storytelling to program
 1. Add license
 
@@ -49,6 +47,8 @@ P1:
             1. Add a reactive framework (like svelte) to help manage state
             1. Add an event listener on click from the hover handler and remove it on mouse up per resizable component matrix
         - Get the resizing working on just one matrix first
+1. Brand the app at the top so people can share it more easily
+1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
