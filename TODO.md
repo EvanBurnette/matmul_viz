@@ -1,15 +1,5 @@
 # TODO
 P0:
-1. resize from the outer edges of the input matrices
-    - make matrices editable
-    - when the size of a matrix changes, recompute result and redraw
-        - There are many ways to approach this and here's a short list:
-            1. Use global "resizing" var like in the reference app (would this be okay with 2 resizable matrices?)
-            1. Use a callback function so that when a matrix updates itself, it can redraw the whole app (object oriented)
-            1. Redraw the screen at a high refresh rate so that any changes are instantly reflected (but this would require changes to the way that connections are drawn)
-            1. Add a reactive framework (like svelte) to help manage state
-            1. Add an event listener on click from the hover handler and remove it on mouse up per resizable component matrix
-
 1. Brand the app at the top so people can share it more easily
 1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 1. Add storytelling to program
@@ -48,6 +38,17 @@ P1:
 1. Draw fewer emoji labels when matrices are smaller
 1. Make the connection lines begin and end in places that allow the eye to more easily trace them
 1. figure out how to change pointer css based on coords in canvas
+1. resize from the outer edges of the input matrices
+    - make matrices editable
+    - when the size of a matrix changes, recompute result and redraw
+        - There are many ways to approach this and here's a short list:
+            1. Use global "resizing" var like in the reference app (would this be okay with 2 resizable matrices?)
+                - could use a var in the matrix object to say when it's being resized
+            1. Use a callback function so that when a matrix updates itself, it can redraw the whole app (object oriented)
+            1. Redraw the screen at a high refresh rate so that any changes are instantly reflected (but this would require changes to the way that connections are drawn)
+            1. Add a reactive framework (like svelte) to help manage state
+            1. Add an event listener on click from the hover handler and remove it on mouse up per resizable component matrix
+        - Get the resizing working on just one matrix first
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices

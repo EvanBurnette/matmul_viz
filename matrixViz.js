@@ -32,21 +32,14 @@ export function matrixViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2 };
-  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0 };
-
-  const resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
-  let resColor = "aqua";
-
-  operations.data = getMatrix(operations.rows, operations.cols, "ops");
-  dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
-  resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
-
+  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
+  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
+  let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
       console.log(`number of shopping list items (data rows) must match number of prices columns (operations columns)\n${dataMatrix.rows} != ${operations.cols}`);
       resColor = "red";
-      return
+      return;
     }
 
     // this is our matmul
@@ -115,9 +108,16 @@ export function matrixViz(canvas, buttons = {}) {
       }
     }
   }
-
+  let resultMatrix;
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
+    resColor = 'aqua';
+
+    operations.data = getMatrix(operations.rows, operations.cols, "ops");
+    dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
+    resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
 
     // drawGrid();
 
@@ -301,9 +301,34 @@ export function matrixViz(canvas, buttons = {}) {
     }
     else {
       const pos = getMousePos(e);
-      canvas.style.cursor = 'default';
+      if (dataMatrix.resizing === null || operations.resizing === null) {
+        canvas.style.cursor = 'default';
+      }
       drawHoverCursor(pos, dataMatrix);
       drawHoverCursor(pos, operations);
+
+      if (dataMatrix.resizing == 'ew') {
+        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x)/grid_size)));
+        draw();
+      } else if (dataMatrix.resizing == 'ns') {
+        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y)/grid_size)));
+        draw();
+      } else if (dataMatrix.resizing == 'nwse'){
+        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x)/grid_size)));
+        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y)/grid_size)));
+        draw();
+      }
+      if (operations.resizing == 'ew') {
+        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x)/grid_size)));
+        draw();
+      } else if (operations.resizing == 'ns') {
+        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y)/grid_size)));
+        draw();
+      } else if (operations.resizing == 'nwse'){
+        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x)/grid_size)));
+        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y)/grid_size)));
+        draw();
+      }
     }
   })
 
@@ -325,7 +350,45 @@ export function matrixViz(canvas, buttons = {}) {
     }
   }
 
+  document.addEventListener('mousedown', (e)=>{
+    const pos = getMousePos(e);
+    if (canvas.style.cursor == 'ew-resize') {
+      if (inBounds(dataMatrix, pos)) {
+        dataMatrix.resizing = 'ew';
+      }
+    }
+    if (canvas.style.cursor == 'ns-resize') {
+      if (inBounds(dataMatrix, pos)) {
+        dataMatrix.resizing = 'ns';
+      }
+    }
+    if (canvas.style.cursor == 'nwse-resize') {
+      if (inBounds(dataMatrix, pos)) {
+        dataMatrix.resizing = 'nwse';
+      }
+    }
 
+    if (canvas.style.cursor == 'ew-resize') {
+      if (inBounds(operations, pos)) {
+        operations.resizing = 'ew';
+      }
+    }
+    if (canvas.style.cursor == 'ns-resize') {
+      if (inBounds(operations, pos)) {
+        operations.resizing = 'ns';
+      }
+    }
+    if (canvas.style.cursor == 'nwse-resize') {
+      if (inBounds(operations, pos)) {
+        operations.resizing = 'nwse';
+      }
+    }
+  })
+
+  document.addEventListener('mouseup', (e)=>{
+    dataMatrix.resizing = null;
+    operations.resizing = null;
+  })
 
   function getMousePos(e) {
     const rect = canvas.getBoundingClientRect();
