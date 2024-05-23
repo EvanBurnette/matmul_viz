@@ -16,7 +16,7 @@ P1:
 1. Allow users to select first the data vector then the operation row to get the result matrix cell
 1. Animate the drawing of the graph
 1. Highlight the inputs and outputs on hover?
-
+1. Highlight the lowest price for each shopper
 
 ## Done
 1. figure out why operations matrix is so small and make it consistently sized with the rest of the matrices
