@@ -32,8 +32,8 @@ export function matrixViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
-  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
+  const operations = { rows: 1, cols: 1, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
+  const dataMatrix = { rows: 1, cols: 1, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
   let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
@@ -112,6 +112,22 @@ export function matrixViz(canvas, buttons = {}) {
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    ctx.font = `${grid_size / 3}px monospace`
+    ctx.fillStyle = "white";
+    ctx.fillText('evanburnette.github.io/matmul_viz', grid_size / 5, grid_size/2)
+
+    ctx.font = `${grid_size}px monospace`
+    ctx.fillStyle = "orange";
+    ctx.fillText('P', grid_size * 1, grid_size * 5);
+    ctx.fillStyle = "white";
+    ctx.fillText('@', grid_size * 2, grid_size * 5);
+    ctx.fillStyle = "#CCF";
+    ctx.fillText('S', grid_size * 3, grid_size * 5);
+    ctx.fillStyle = "white";
+    ctx.fillText('=', grid_size * 4, grid_size * 5);
+    ctx.fillStyle = "aqua";
+    ctx.fillText('R', grid_size * 5, grid_size * 5);
+
     resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
     resColor = 'aqua';
 
@@ -127,7 +143,8 @@ export function matrixViz(canvas, buttons = {}) {
     drawColumnLabels(operations, fruits);
 
     //draw data matrix
-    drawMatrix(dataMatrix, "shopping lists", "#CCF", false);
+    const plural = dataMatrix.cols > 1 ? 's' : ' ';
+    drawMatrix(dataMatrix, `shopping lists`, "#CCF", false);
     drawRowLabels(dataMatrix, fruits);
     drawColumnLabels(dataMatrix, shoppers);
 
