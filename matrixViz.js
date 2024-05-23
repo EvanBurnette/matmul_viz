@@ -32,8 +32,8 @@ export function matrixViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 1, cols: 1, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
-  const dataMatrix = { rows: 1, cols: 1, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
+  const operations = { rows: 4, cols: 2, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
+  const dataMatrix = { rows: 2, cols: 3, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
   let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
@@ -120,7 +120,7 @@ export function matrixViz(canvas, buttons = {}) {
     ctx.fillStyle = "orange";
     ctx.fillText('P', grid_size * 1, grid_size * 5);
     ctx.fillStyle = "white";
-    ctx.fillText('@', grid_size * 2, grid_size * 5);
+    ctx.fillText('⋅', grid_size * 2, grid_size * 5);
     ctx.fillStyle = "#CCF";
     ctx.fillText('S', grid_size * 3, grid_size * 5);
     ctx.fillStyle = "white";
