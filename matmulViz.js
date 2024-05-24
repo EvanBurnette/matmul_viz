@@ -164,9 +164,9 @@ export function matmulViz(canvas, buttons = {}) {
     if (operations.cols != dataMatrix.rows) {
       for (let i = 0; i < Math.max(operations.cols, dataMatrix.rows); i++) {
         if (i >= Math.min(operations.cols, dataMatrix.rows)) {
-          ctx.strokeStyle = "#F00";
+          ctx.strokeStyle = "red";
         } else {
-          ctx.strokeStyle = "#FFF8";
+          ctx.strokeStyle = "#0F08";
         }
         const start = {x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2};
         const end = {x: dataMatrix.x - grid_size / 2, y: dataMatrix.y + i * grid_size + grid_size / 2}
