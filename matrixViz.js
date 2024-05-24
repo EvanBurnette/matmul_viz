@@ -11,10 +11,11 @@ export function matrixViz(canvas, buttons = {}) {
   canvas.height = squareDim;
 
   const divs = 16;
-  const grid_size = Math.floor(squareDim / divs);
+  const grid_size = Math.round(squareDim / divs);
   canvas.width = squareDim - grid_size;
 
   function drawGrid() {
+    ctx.lineWidth = 1;
     for (let c = 0; c < divs; c++) {
       ctx.strokeStyle = "#AA3";
       ctx.beginPath();
@@ -32,8 +33,8 @@ export function matrixViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 4, cols: 2, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
-  const dataMatrix = { rows: 2, cols: 3, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
+  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
+  const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
   let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
@@ -137,12 +138,10 @@ export function matrixViz(canvas, buttons = {}) {
 
     // drawGrid();
 
-    //draw ops matrix
     drawMatrix(operations, "prices", "orange", true);
     drawRowLabels(operations, stores);
     drawColumnLabels(operations, fruits);
 
-    //draw data matrix
     const plural = dataMatrix.cols > 1 ? 's' : ' ';
     drawMatrix(dataMatrix, `shopping lists`, "#CCF", false);
     drawRowLabels(dataMatrix, fruits);
@@ -150,7 +149,6 @@ export function matrixViz(canvas, buttons = {}) {
 
     updateResultMatrix();
 
-    //draw result matrix
     drawMatrix(resultMatrix, "result", resColor)
     drawRowLabels(resultMatrix, stores);
     drawColumnLabels(resultMatrix, shoppers);
@@ -185,22 +183,38 @@ export function matrixViz(canvas, buttons = {}) {
       ctx.fillText(label, x, y);
     }
   }
+  function highlightLowestPrice(cell, col, matrix){
+    if (cell.val == 0){
+      return;
+    }
+    // console.log(transpose(matrix.data))
+    const minVal = Math.min(...(transpose(matrix.data)[col].map(cell=>cell.val)));
+    console.log(minVal, "min")
+    ctx.fillStyle = "#FFF2";
+    if (cell.val === minVal){
+      ctx.fillRect(cell.x, cell.y, grid_size, grid_size);
+      console.log('filling minimum val')
+    }
+  }
+
   function drawMatrix(matrix, name, color, cost = "false") {
     const prefix = cost ? "$" : "";
     ctx.fillStyle = color;
     ctx.font = cost ? `${grid_size / 4}px monospace` : `${grid_size / 2}px monospace`;
-    matrix.data.forEach((row, i) => {
-      row.forEach((cell, j) => {
+    matrix.data.forEach((row, r) => {
+      row.forEach((cell, c) => {
         let stem = cost ? cell.val.toFixed(2) : cell.val;
-        cell.x = matrix.x + j * grid_size;
-        cell.y = matrix.y + i * grid_size;
+        cell.x = matrix.x + c * grid_size;
+        cell.y = matrix.y + r * grid_size;
         if (name == "shopping lists") {
           cell.y += grid_size / 2.5;
           cell.x += grid_size / 4;
         } else if (name == "result") {
+          highlightLowestPrice(cell, c, matrix);
           cell.y += grid_size * 0.25;
           cell.x -= grid_size * 0.05;
         }
+        ctx.fillStyle = color;
         ctx.fillText(prefix + stem, cell.x + grid_size / 10, cell.y + grid_size / 3);
       });
     });

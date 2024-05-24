@@ -1,7 +1,9 @@
 # TODO
 P0:
+1. Make it work on mobile (i.e. add touch controls)
 1. Add storytelling to program
 1. Add license
+1. Contact 3B1B and Better Explained and show them the demo (try to find other networking opportunities as well)
 
 P1:
 1. Report zero width character broken for emojis on chrome canvas
@@ -10,11 +12,9 @@ P1:
 1. Fade other connections to 50% opacity while visualizing a single output cell
 1. Create Demo video
 1. Create retrospective video
-1. Make it work on mobile (i.e. touch controls)
-1. Allow users to select first the data vector then the operation row to get the result matrix cell
+1. Allow users to select first the data vector then the operation row to get the result matrix cell (advanced)
 1. Animate the drawing of the graph
 1. Highlight the inputs and outputs on hover?
-1. Highlight the lowest price for each shopper
 
 ## Done
 1. figure out why operations matrix is so small and make it consistently sized with the rest of the matrices
@@ -49,6 +49,7 @@ P1:
         - Get the resizing working on just one matrix first
 1. Brand the app at the top so people can share it more easily
 1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
+1. Highlight the lowest price for each shopper
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
