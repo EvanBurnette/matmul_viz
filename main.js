@@ -1,8 +1,8 @@
 import './style.css';
-import { matrixViz } from './matrixViz';
+import { matmulViz } from './matmulViz';
 
 document.querySelector('#app').innerHTML = `
   <canvas id="matrixCanvas"></canvas>
 `
 
-matrixViz(document.querySelector("canvas"));
+matmulViz(document.querySelector("canvas"));

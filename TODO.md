@@ -50,6 +50,7 @@ P1:
 1. Brand the app at the top so people can share it more easily
 1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 1. Highlight the lowest price for each shopper
+1. Highlight broken matchup between number of fruits in lists and number of prices at stores
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices

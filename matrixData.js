@@ -169,5 +169,5 @@ export function getMatrix(rows = 5, cols = 5, type = "data") {
   
   // Example usage with the provided data
   const totalCosts = calculateTotals(groceryOrders, groceryPrices);
-  console.log(totalCosts);
+  // console.log(totalCosts);
   

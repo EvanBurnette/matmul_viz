@@ -4,7 +4,7 @@ import { mean, result } from 'lodash';
 
 import { hslaToHexa } from './utils.js';
 
-export function matrixViz(canvas, buttons = {}) {
+export function matmulViz(canvas, buttons = {}) {
   const shoppers_set = new Set(shoppers);
   const ctx = canvas.getContext('2d');
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
@@ -17,8 +17,8 @@ export function matrixViz(canvas, buttons = {}) {
   function drawGrid() {
     ctx.lineWidth = 1;
     for (let c = 0; c < divs; c++) {
-      ctx.strokeStyle = "#AA3";
       ctx.beginPath();
+      ctx.strokeStyle = "#AA3";
       ctx.moveTo(grid_size * c, 0);
       ctx.lineTo(grid_size * c, canvas.height);
       ctx.stroke();
@@ -38,7 +38,6 @@ export function matrixViz(canvas, buttons = {}) {
   let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
-      console.log(`number of shopping list items (data rows) must match number of prices columns (operations columns)\n${dataMatrix.rows} != ${operations.cols}`);
       resColor = "red";
       return;
     }
@@ -156,14 +155,29 @@ export function matrixViz(canvas, buttons = {}) {
 
     registerShoppers({ x: Math.floor((dataMatrix.x + grid_size / 2) / grid_size), y: Math.floor((dataMatrix.y + grid_size / 2) / grid_size) - 1 }, dataMatrix);
 
+    drawBrokenConnections();
     // drawAllConnections();
   }
   draw();
 
+  function drawBrokenConnections(){
+    if (operations.cols != dataMatrix.rows) {
+      for (let i = 0; i < Math.max(operations.cols, dataMatrix.rows); i++) {
+        if (i >= Math.min(operations.cols, dataMatrix.rows)) {
+          ctx.strokeStyle = "#F00";
+        } else {
+          ctx.strokeStyle = "#FFF8";
+        }
+        const start = {x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2};
+        const end = {x: dataMatrix.x - grid_size / 2, y: dataMatrix.y + i * grid_size + grid_size / 2}
+        drawLine(start, end);
+      }
+    }
+  }
+
   function drawColumnLabels(matrix, labels) {
     const cols = matrix.cols;
     for (let i = 0; i < cols; i++) {
-      // draw each label
       const label = labels[i];
       let x = matrix.x + grid_size / 5 + i * grid_size;
       let y = matrix.y + grid_size / -3;
@@ -174,9 +188,7 @@ export function matrixViz(canvas, buttons = {}) {
   }
   function drawRowLabels(matrix, labels) {
     const rows = matrix.rows;
-    // labels.forEach((label, index) => {
     for (let i = 0; i < rows; i++) {
-      //draw each label
       const label = labels[i];
       let x = matrix.x - grid_size * 0.75;
       let y = matrix.y + grid_size / 1.5 + i * grid_size;
@@ -187,13 +199,10 @@ export function matrixViz(canvas, buttons = {}) {
     if (cell.val == 0){
       return;
     }
-    // console.log(transpose(matrix.data))
     const minVal = Math.min(...(transpose(matrix.data)[col].map(cell=>cell.val)));
-    console.log(minVal, "min")
-    ctx.fillStyle = "#FFF2";
+    ctx.fillStyle = "#FFFFFF1C";
     if (cell.val === minVal){
       ctx.fillRect(cell.x, cell.y, grid_size, grid_size);
-      console.log('filling minimum val')
     }
   }
 
