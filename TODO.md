@@ -2,7 +2,7 @@
 P0:
 1. Create Demo video
 1. Make it work on mobile (i.e. add touch controls)
-1. Add storytelling to program
+1. Add storytelling or use program in a blog style article with the program as interactive puzzles with storytelling
 1. Add license
 1. Contact 3B1B and Better Explained and show them the demo (try to find other networking opportunities as well)
 
@@ -12,10 +12,11 @@ P1:
 1. Add more colors using HSL so that we can have more visual signals for the user
 1. Fade other connections to 50% opacity while visualizing a single output cell
 1. Create retrospective video
-1. Allow users to select first the data vector then the operation row to get the result matrix cell (advanced)
+1. Allow users to select first the data vector then the operation row to get the result matrix cell (perhaps this could be a mode for the instructional/blog/story version)
 1. Animate the drawing of the graph
 1. Highlight the inputs and outputs on hover?
-1. Remove janky centering text
+1. Remove and replace janky centering text with canvas baseline?
+1. Add a cooler background
 
 ## Done
 1. figure out why operations matrix is so small and make it consistently sized with the rest of the matrices
@@ -54,6 +55,7 @@ P1:
 1. Highlight broken matchup between number of fruits in lists and number of prices at stores
 1. Highlight minvals with green outline or something
 1. Put X emoji at the end of the broken connections
+1. Center the app vertically in the browser
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
