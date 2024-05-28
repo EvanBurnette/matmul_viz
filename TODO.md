@@ -1,5 +1,6 @@
 # TODO
 P0:
+1. Create Demo video
 1. Make it work on mobile (i.e. add touch controls)
 1. Add storytelling to program
 1. Add license
@@ -10,11 +11,11 @@ P1:
 1. Flash the background of the button to aid intuition
 1. Add more colors using HSL so that we can have more visual signals for the user
 1. Fade other connections to 50% opacity while visualizing a single output cell
-1. Create Demo video
 1. Create retrospective video
 1. Allow users to select first the data vector then the operation row to get the result matrix cell (advanced)
 1. Animate the drawing of the graph
 1. Highlight the inputs and outputs on hover?
+1. Remove janky centering text
 
 ## Done
 1. figure out why operations matrix is so small and make it consistently sized with the rest of the matrices
@@ -51,6 +52,8 @@ P1:
 1. Add the written version of the computation like "P * S = R" and/or "Ops * Data = Results"
 1. Highlight the lowest price for each shopper
 1. Highlight broken matchup between number of fruits in lists and number of prices at stores
+1. Highlight minvals with green outline or something
+1. Put X emoji at the end of the broken connections
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices

@@ -7,6 +7,7 @@ import { hslaToHexa } from './utils.js';
 export function matmulViz(canvas, buttons = {}) {
   const shoppers_set = new Set(shoppers);
   const ctx = canvas.getContext('2d');
+
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
 
@@ -33,7 +34,7 @@ export function matmulViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 5, cols: 5, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
+  const operations = { rows: 5, cols: 2, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
   const dataMatrix = { rows: 5, cols: 5, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
   let resColor;
   function updateResultMatrix() {
@@ -163,14 +164,22 @@ export function matmulViz(canvas, buttons = {}) {
   function drawBrokenConnections(){
     if (operations.cols != dataMatrix.rows) {
       for (let i = 0; i < Math.max(operations.cols, dataMatrix.rows); i++) {
-        if (i >= Math.min(operations.cols, dataMatrix.rows)) {
+        const broken = i >= Math.min(operations.cols, dataMatrix.rows);
+        if (broken) {
           ctx.strokeStyle = "red";
         } else {
           ctx.strokeStyle = "#0F08";
         }
-        const start = {x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2};
-        const end = {x: dataMatrix.x - grid_size / 2, y: dataMatrix.y + i * grid_size + grid_size / 2}
+        const start = {x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2 - grid_size/3};
+        const end = {x: dataMatrix.x - grid_size / 2 - grid_size / 3, y: dataMatrix.y + i * grid_size + grid_size / 2}
         drawLine(start, end);
+        if (broken) {
+          if (operations.cols > dataMatrix.rows) {
+            ctx.fillText("❌", end.x + grid_size / 12, end.y + grid_size / 5);
+          } else {
+            ctx.fillText("❌", start.x - grid_size / 4, start.y + grid_size / 2 + grid_size / 40);
+          }
+        }
       }
     }
   }
@@ -200,13 +209,31 @@ export function matmulViz(canvas, buttons = {}) {
       return;
     }
     const minVal = Math.min(...(transpose(matrix.data)[col].map(cell=>cell.val)));
-    ctx.fillStyle = "#FFFFFF1C";
     if (cell.val === minVal){
-      ctx.fillRect(cell.x, cell.y, grid_size, grid_size);
+      ctx.fillStyle = "#00FF0033";
+      ctx.fillRect(cell.x + ctx.lineWidth, cell.y + ctx.lineWidth, grid_size - 2 * ctx.lineWidth, grid_size - 2 * ctx.lineWidth);
+      ctx.strokeStyle = "green";
+      ctx.lineWidth = 2;
+      ctx.strokeRect(cell.x + ctx.lineWidth, cell.y + ctx.lineWidth, grid_size - 2 * ctx.lineWidth, grid_size - 2 * ctx.lineWidth);
     }
   }
 
   function drawMatrix(matrix, name, color, cost = "false") {
+    ctx.lineWidth = 2;
+    if (name == "prices") {
+      // create row vectors
+      for (const r in matrix.data) {
+
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(matrix.x, r * grid_size + matrix.y, grid_size * matrix.cols, grid_size);
+      }
+    } else {
+      for (const c in matrix.data[0]) {
+        ctx.strokeStyle = "white";
+        ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
+      }
+    }
+
     const prefix = cost ? "$" : "";
     ctx.fillStyle = color;
     ctx.font = cost ? `${grid_size / 4}px monospace` : `${grid_size / 2}px monospace`;
@@ -228,20 +255,6 @@ export function matmulViz(canvas, buttons = {}) {
       });
     });
 
-    ctx.lineWidth = 2;
-    if (name == "prices") {
-      // create row vectors
-      for (const r in matrix.data) {
-
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(matrix.x, r * grid_size + matrix.y, grid_size * matrix.cols, grid_size);
-      }
-    } else {
-      for (const c in matrix.data[0]) {
-        ctx.strokeStyle = "white";
-        ctx.strokeRect(matrix.x + grid_size * c, matrix.y, grid_size, grid_size * matrix.rows)
-      }
-    }
     // draw label text
     ctx.fillStyle = color
     ctx.font = `${grid_size / 2}px monospace`;
