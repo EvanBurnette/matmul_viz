@@ -1,6 +1,6 @@
 import { getMatrix, fruits, shoppers, stores, Node, transpose, getZeroMatrix, elemWiseMult, sumVec } from "./matrixData.js";
 
-import { mean, result } from 'lodash';
+import { mean } from 'lodash';
 
 import { hslaToHexa } from './utils.js';
 
@@ -11,9 +11,9 @@ export function matmulViz(canvas, buttons = {}) {
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
 
-  const divs = 16;
+  const divs = 14;
   const grid_size = Math.round(squareDim / divs);
-  canvas.width = squareDim - grid_size;
+  canvas.width = squareDim;
 
   function drawGrid() {
     ctx.lineWidth = 1;
@@ -113,21 +113,21 @@ export function matmulViz(canvas, buttons = {}) {
   function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.font = `${grid_size / 3}px monospace`
-    ctx.fillStyle = "white";
-    ctx.fillText('evanburnette.github.io/matmul_viz', grid_size / 5, grid_size/2)
+    // ctx.font = `${grid_size / 3}px monospace`
+    // ctx.fillStyle = "white";
+    // ctx.fillText('evanburnette.github.io/matmul_viz', grid_size / 5, grid_size/2)
 
-    ctx.font = `${grid_size}px monospace`
-    ctx.fillStyle = "orange";
-    ctx.fillText('P', grid_size * 1, grid_size * 5);
-    ctx.fillStyle = "white";
-    ctx.fillText('⋅', grid_size * 2, grid_size * 5);
-    ctx.fillStyle = "#CCF";
-    ctx.fillText('S', grid_size * 3, grid_size * 5);
-    ctx.fillStyle = "white";
-    ctx.fillText('=', grid_size * 4, grid_size * 5);
-    ctx.fillStyle = "aqua";
-    ctx.fillText('R', grid_size * 5, grid_size * 5);
+    // ctx.font = `${grid_size}px monospace`
+    // ctx.fillStyle = "orange";
+    // ctx.fillText('P', grid_size * 1, grid_size * 5);
+    // ctx.fillStyle = "white";
+    // ctx.fillText('⋅', grid_size * 2, grid_size * 5);
+    // ctx.fillStyle = "#CCF";
+    // ctx.fillText('S', grid_size * 3, grid_size * 5);
+    // ctx.fillStyle = "white";
+    // ctx.fillText('=', grid_size * 4, grid_size * 5);
+    // ctx.fillStyle = "aqua";
+    // ctx.fillText('R', grid_size * 5, grid_size * 5);
 
     resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
     resColor = 'aqua';
@@ -149,7 +149,7 @@ export function matmulViz(canvas, buttons = {}) {
 
     updateResultMatrix();
 
-    drawMatrix(resultMatrix, "result", resColor)
+    drawMatrix(resultMatrix, "totals", resColor)
     drawRowLabels(resultMatrix, stores);
     drawColumnLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
@@ -245,7 +245,7 @@ export function matmulViz(canvas, buttons = {}) {
         if (name == "shopping lists") {
           cell.y += grid_size / 2.5;
           cell.x += grid_size / 4;
-        } else if (name == "result") {
+        } else if (name == "totals") {
           highlightLowestPrice(cell, c, matrix);
           cell.y += grid_size * 0.25;
           cell.x -= grid_size * 0.05;
