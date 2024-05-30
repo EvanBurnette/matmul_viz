@@ -1,17 +1,16 @@
 # TODO
 P0:
-1. Change name of result to totals
 1. Create Demo video
 1. Make it work on mobile (i.e. add touch controls)
 1. Draw arrow vector notation over the equation when only vectors (i.e. the data is 1 col and the ops are 1 row)
 1. Draw lowercase letters when only scalar multiplication and change s to q
 1. Draw uppercase notation when showing matrix multiplication.
-1. Rename result matrix to totals
 1. Add storytelling or use program in a blog style article with the program as interactive puzzles with storytelling
 1. Add license
 1. Contact 3B1B and Better Explained and show them the demo (try to find other networking opportunities as well)
 
 P1:
+1. Refactor matrix names to align with the names shown in the app ie totals, shopping lists, prices
 1. Report zero width character broken for emojis on chrome canvas
 1. Flash the background of the button to aid intuition
 1. Add more colors using HSL so that we can have more visual signals for the user
@@ -61,6 +60,8 @@ P1:
 1. Highlight minvals with green outline or something
 1. Put X emoji at the end of the broken connections
 1. Center the app vertically in the browser
+1. Change name of result to totals
+
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
