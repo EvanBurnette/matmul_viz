@@ -1,7 +1,12 @@
 # TODO
 P0:
+1. Change name of result to totals
 1. Create Demo video
 1. Make it work on mobile (i.e. add touch controls)
+1. Draw arrow vector notation over the equation when only vectors (i.e. the data is 1 col and the ops are 1 row)
+1. Draw lowercase letters when only scalar multiplication and change s to q
+1. Draw uppercase notation when showing matrix multiplication.
+1. Rename result matrix to totals
 1. Add storytelling or use program in a blog style article with the program as interactive puzzles with storytelling
 1. Add license
 1. Contact 3B1B and Better Explained and show them the demo (try to find other networking opportunities as well)
