@@ -3,8 +3,8 @@ export const fruits = "🍌 🍏 🍉 🍍 🫐".split(' ');
 export const stores = "🛒 🌺 🌱 🎯 🐖".split(' ');
 // Data
 const groceryOrders = {
-  //  🧑🏾‍🎤 🤖 👮 👷 👨🏻‍💻
-  Alice: [1, 2, 3, 4, 5],
+  //  🧘 🤖 👮 👷 👨🏻‍💻
+  Anna: [2, 1, 3, 4, 5],
   Bob: [5, 4, 3, 2, 1],
   Charlie: [1, 1, 1, 1, 1],
   Dave: [1, 2, 1, 2, 1],
