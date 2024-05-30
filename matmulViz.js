@@ -137,19 +137,20 @@ export function matmulViz(canvas, buttons = {}) {
     resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
 
     // drawGrid();
-
-    drawMatrix(operations, "prices", "orange", true);
+    const operationsMatrixPlural = operations.cols > 1 || operations.rows > 1;
+    drawMatrix(operations, "price", "orange", true, operationsMatrixPlural);
     drawRowLabels(operations, stores);
     drawColumnLabels(operations, fruits);
 
-    const plural = dataMatrix.cols > 1 ? 's' : ' ';
-    drawMatrix(dataMatrix, `shopping lists`, "#CCF", false);
+    const shoppingListPlural = dataMatrix.cols > 1 ? true : false;
+    drawMatrix(dataMatrix, `shopping list`, "#CCF", false, shoppingListPlural);
     drawRowLabels(dataMatrix, fruits);
     drawColumnLabels(dataMatrix, shoppers);
 
     updateResultMatrix();
 
-    drawMatrix(resultMatrix, "totals", resColor)
+    const resultMatrixPlural = resultMatrix.cols > 1 || resultMatrix.rows > 1;
+    drawMatrix(resultMatrix, "total", resColor, true, resultMatrixPlural)
     drawRowLabels(resultMatrix, stores);
     drawColumnLabels(resultMatrix, shoppers);
     registerButtons(resultMatrix);
@@ -218,9 +219,9 @@ export function matmulViz(canvas, buttons = {}) {
     }
   }
 
-  function drawMatrix(matrix, name, color, cost = "false") {
+  function drawMatrix(matrix, name, color, cost=false, plural=true) {
     ctx.lineWidth = 2;
-    if (name == "prices") {
+    if (name == "price") {
       // create row vectors
       for (const r in matrix.data) {
 
@@ -242,10 +243,10 @@ export function matmulViz(canvas, buttons = {}) {
         let stem = cost ? cell.val.toFixed(2) : cell.val;
         cell.x = matrix.x + c * grid_size;
         cell.y = matrix.y + r * grid_size;
-        if (name == "shopping lists") {
+        if (name == "shopping list") {
           cell.y += grid_size / 2.5;
           cell.x += grid_size / 4;
-        } else if (name == "totals") {
+        } else if (name == "total") {
           highlightLowestPrice(cell, c, matrix);
           cell.y += grid_size * 0.25;
           cell.x -= grid_size * 0.05;
@@ -258,7 +259,7 @@ export function matmulViz(canvas, buttons = {}) {
     // draw label text
     ctx.fillStyle = color
     ctx.font = `${grid_size / 2}px monospace`;
-    ctx.fillText(name, matrix.x, matrix.y - grid_size * 1.25);
+    ctx.fillText(name + (plural ? "s" : ''), matrix.x, matrix.y - grid_size * 1.0);
 
     ctx.fillStyle = 'white';
   }
