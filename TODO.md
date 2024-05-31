@@ -1,6 +1,5 @@
 # TODO
 P0:
-1. Create Demo video
 1. Make it work on mobile (i.e. add touch controls)
 1. Draw arrow vector notation over the equation when only vectors (i.e. the data is 1 col and the ops are 1 row)
 1. Draw lowercase letters when only scalar multiplication and change s to q
@@ -61,7 +60,12 @@ P1:
 1. Put X emoji at the end of the broken connections
 1. Center the app vertically in the browser
 1. Change name of result to totals
-
+1. ADD VOICEOVER TO VIDEO DESCRIBING THE SIZE OF THE OUTPUT MATRIX 3X2
+1. Fix app so the bottom of the screen is available
+1. Create Demo video
+    1. Balance Audio
+    1. Add matrix and other memes
+    1. Add text overlays
 
 ## Not necessary
 1. We want to swap the handles that allow the user to resize the matrices
