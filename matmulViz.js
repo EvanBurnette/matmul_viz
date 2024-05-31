@@ -11,7 +11,7 @@ export function matmulViz(canvas, buttons = {}) {
   const squareDim = Math.min(window.innerWidth, window.innerHeight) - 20;
   canvas.height = squareDim;
 
-  const divs = 14;
+  const divs = 16;
   const grid_size = Math.round(squareDim / divs);
   canvas.width = squareDim;
 
@@ -246,6 +246,9 @@ export function matmulViz(canvas, buttons = {}) {
         if (name == "shopping list") {
           cell.y += grid_size / 2.5;
           cell.x += grid_size / 4;
+          if (dataMatrix.rows === 1 && dataMatrix.cols === 1) {
+            name = "quantity"
+          }
         } else if (name == "total") {
           highlightLowestPrice(cell, c, matrix);
           cell.y += grid_size * 0.25;
