@@ -11,4 +11,4 @@ Additionally, it shows the output matrix in an orientation where it is clear why
 
 Try it yourself! Click total cells to see their upstream dependencies and resize the input matrices to gain your own intuitions for why we need certain input dimensions to match and others are flexible!
 
-<iframe src="https://evanburnette.github.io/matmul_viz" title="Matrix Multiplication Visualizer" width="700" height="700"></iframe>
+[Live Demo on Github Pages]("https://evanburnette.github.io/matmul_viz")
