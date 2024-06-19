@@ -71,7 +71,7 @@ old stuff below
 
 (If you're new here this is a channel where we develop intuition for AI by breaking it down piece by piece. Today we learned a very important piece. Click the subscribe button and the bell icon to stay tuned for more!)
 
-The foundation of modern AI is matrix multiplcation. Matrix multiplication in this case has created a total cost at each store based on each shopping list and each price list.
+The foundation of modern AI is matrix multiplication. Matrix multiplication in this case has created a total cost at each store based on each shopping list and each price list.
 
 Scaled dot product attention is at the core of state of the art AI right now. Transformers transform the inputs via matrix multiplication (and some other tricks).
 
