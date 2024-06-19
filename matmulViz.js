@@ -34,8 +34,8 @@ export function matmulViz(canvas, buttons = {}) {
   }
 
   // Matrix definitions
-  const operations = { rows: 1, cols: 1, data: [], x: grid_size * 1.0, y: grid_size * (divs / 2) + grid_size * 2, resizing: null };
-  const dataMatrix = { rows: 1, cols: 1, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2.0, resizing: null };
+  const operations = { rows: 1, cols: 1, data: [], x: grid_size * 2.0, y: grid_size * (divs / 2) + grid_size, resizing: null };
+  const dataMatrix = { rows: 1, cols: 1, data: [], x: grid_size * (divs / 2 + 1), y: grid_size * 2, resizing: null };
   let resColor;
   function updateResultMatrix() {
     if (operations.cols != dataMatrix.rows) {
@@ -130,13 +130,14 @@ export function matmulViz(canvas, buttons = {}) {
     // ctx.fillText('R', grid_size * 5, grid_size * 5);
 
     resultMatrix = { rows: operations.rows, cols: dataMatrix.cols, data: [], x: dataMatrix.x, y: operations.y };
+
     resColor = 'aqua';
 
     operations.data = getMatrix(operations.rows, operations.cols, "ops");
     dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
     resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
 
-    // drawGrid();
+    drawGrid();
     const operationsMatrixPlural = operations.cols > 1 || operations.rows > 1;
     drawMatrix(operations, "price", "orange", true, operationsMatrixPlural);
     drawRowLabels(operations, stores);
@@ -162,7 +163,7 @@ export function matmulViz(canvas, buttons = {}) {
   }
   draw();
 
-  function drawBrokenConnections(){
+  function drawBrokenConnections() {
     if (operations.cols != dataMatrix.rows) {
       for (let i = 0; i < Math.max(operations.cols, dataMatrix.rows); i++) {
         const broken = i >= Math.min(operations.cols, dataMatrix.rows);
@@ -171,8 +172,8 @@ export function matmulViz(canvas, buttons = {}) {
         } else {
           ctx.strokeStyle = "#0F08";
         }
-        const start = {x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2 - grid_size/3};
-        const end = {x: dataMatrix.x - grid_size / 2 - grid_size / 3, y: dataMatrix.y + i * grid_size + grid_size / 2}
+        const start = { x: i * grid_size + operations.x + grid_size / 2, y: operations.y - grid_size / 2 - grid_size / 3 };
+        const end = { x: dataMatrix.x - grid_size / 2 - grid_size / 3, y: dataMatrix.y + i * grid_size + grid_size / 2 }
         drawLine(start, end);
         if (broken) {
           if (operations.cols > dataMatrix.rows) {
@@ -205,12 +206,12 @@ export function matmulViz(canvas, buttons = {}) {
       ctx.fillText(label, x, y);
     }
   }
-  function highlightLowestPrice(cell, col, matrix){
-    if (cell.val == 0){
+  function highlightLowestPrice(cell, col, matrix) {
+    if (cell.val == 0) {
       return;
     }
-    const minVal = Math.min(...(transpose(matrix.data)[col].map(cell=>cell.val)));
-    if (cell.val === minVal){
+    const minVal = Math.min(...(transpose(matrix.data)[col].map(cell => cell.val)));
+    if (cell.val === minVal) {
       ctx.fillStyle = "#00FF0033";
       ctx.fillRect(cell.x + ctx.lineWidth, cell.y + ctx.lineWidth, grid_size - 2 * ctx.lineWidth, grid_size - 2 * ctx.lineWidth);
       ctx.strokeStyle = "green";
@@ -219,7 +220,7 @@ export function matmulViz(canvas, buttons = {}) {
     }
   }
 
-  function drawMatrix(matrix, name, color, cost=false, plural=true) {
+  function drawMatrix(matrix, name, color, cost = false, plural = true) {
     ctx.lineWidth = 2;
     if (name == "price") {
       // create row vectors
@@ -365,31 +366,31 @@ export function matmulViz(canvas, buttons = {}) {
       drawHoverCursor(pos, operations);
 
       if (dataMatrix.resizing == 'ew') {
-        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x)/grid_size)));
+        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x) / grid_size)));
         draw();
       } else if (dataMatrix.resizing == 'ns') {
-        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y)/grid_size)));
+        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y) / grid_size)));
         draw();
-      } else if (dataMatrix.resizing == 'nwse'){
-        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x)/grid_size)));
-        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y)/grid_size)));
+      } else if (dataMatrix.resizing == 'nwse') {
+        dataMatrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - dataMatrix.x) / grid_size)));
+        dataMatrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - dataMatrix.y) / grid_size)));
         draw();
       }
       if (operations.resizing == 'ew') {
-        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x)/grid_size)));
+        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x) / grid_size)));
         draw();
       } else if (operations.resizing == 'ns') {
-        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y)/grid_size)));
+        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y) / grid_size)));
         draw();
-      } else if (operations.resizing == 'nwse'){
-        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x)/grid_size)));
-        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y)/grid_size)));
+      } else if (operations.resizing == 'nwse') {
+        operations.cols = Math.max(1, Math.min(5, Math.round((pos.x - operations.x) / grid_size)));
+        operations.rows = Math.max(1, Math.min(5, Math.round((pos.y - operations.y) / grid_size)));
         draw();
       }
     }
   })
 
-  function drawHoverCursor(pos, matrix){
+  function drawHoverCursor(pos, matrix) {
     let edgeX = matrix.x + matrix.cols * grid_size;
     let edgeY = matrix.y + matrix.rows * grid_size;
 
@@ -407,7 +408,7 @@ export function matmulViz(canvas, buttons = {}) {
     }
   }
 
-  document.addEventListener('mousedown', (e)=>{
+  document.addEventListener('mousedown', (e) => {
     const pos = getMousePos(e);
     if (canvas.style.cursor == 'ew-resize') {
       if (inBounds(dataMatrix, pos)) {
@@ -442,7 +443,7 @@ export function matmulViz(canvas, buttons = {}) {
     }
   })
 
-  document.addEventListener('mouseup', (e)=>{
+  document.addEventListener('mouseup', (e) => {
     dataMatrix.resizing = null;
     operations.resizing = null;
   })
@@ -480,62 +481,62 @@ export function matmulViz(canvas, buttons = {}) {
     handleResizing(pos, dataMatrix, e);
     handleResizing(pos, operations, e);
     draw(); // Redraw at every touch move if needed
-});
+  });
 
-document.addEventListener('touchstart', (e) => {
+  document.addEventListener('touchstart', (e) => {
     if (e.touches.length > 2) return;
 
     const touch = e.touches[0];
     const pos = getTouchPos(touch);
     startResizing(pos, dataMatrix);
     startResizing(pos, operations);
-});
+  });
 
-document.addEventListener('touchend', (e) => {
+  document.addEventListener('touchend', (e) => {
     dataMatrix.resizing = null;
     operations.resizing = null;
-});
+  });
 
-function getTouchPos(touch) {
+  function getTouchPos(touch) {
     const rect = canvas.getBoundingClientRect();
     return {
-        x: touch.clientX - rect.left,
-        y: touch.clientY - rect.top
+      x: touch.clientX - rect.left,
+      y: touch.clientY - rect.top
     };
-}
+  }
 
-function startResizing(pos, matrix) {
+  function startResizing(pos, matrix) {
     if (inBounds(matrix, pos)) {
-        if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size) &&
-            nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
-            matrix.resizing = 'nwse';
-        } else if (nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
-            matrix.resizing = 'ns';
-        } else if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size)) {
-            matrix.resizing = 'ew';
-        }
+      if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size) &&
+        nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
+        matrix.resizing = 'nwse';
+      } else if (nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
+        matrix.resizing = 'ns';
+      } else if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size)) {
+        matrix.resizing = 'ew';
+      }
     }
-}
+  }
 
-function handleResizing(pos, matrix, event) {
+  function handleResizing(pos, matrix, event) {
     if (!matrix.resizing) return;
     event.preventDefault()
     switch (matrix.resizing) {
-        case 'ew':
-            matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
-            break;
-        case 'ns':
-            matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
-            break;
-        case 'nwse':
-            matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
-            matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
-            break;
+      case 'ew':
+        matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
+        break;
+      case 'ns':
+        matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
+        break;
+      case 'nwse':
+        matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
+        matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
+        break;
     }
-}
+  }
 
-function nearEdge(pos, edge) {
-    return Math.abs(pos - edge) <= grid_size / 5;
-}
+  function nearEdge(pos, edge) {
+    return Math.abs(pos - edge) <= grid_size / 3;
+  }
 }
 

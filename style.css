@@ -19,3 +19,11 @@ canvas {
   -webkit-tap-highlight-color: transparent; /* For WebKit browsers */
   tap-highlight-color: transparent; /* Standard CSS property, if supported */
 }
+
+html, body {
+  overflow: hidden;
+}
+body {
+  overflow: hidden;
+  position: relative;
+}
