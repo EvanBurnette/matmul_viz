@@ -137,7 +137,7 @@ export function matmulViz(canvas, buttons = {}) {
     dataMatrix.data = getMatrix(dataMatrix.rows, dataMatrix.cols, "data");
     resultMatrix.data = getZeroMatrix(operations.rows, dataMatrix.cols);
 
-    drawGrid();
+    // drawGrid();
     const operationsMatrixPlural = operations.cols > 1 || operations.rows > 1;
     drawMatrix(operations, "price", "orange", true, operationsMatrixPlural);
     drawRowLabels(operations, stores);
