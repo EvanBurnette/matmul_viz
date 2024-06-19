@@ -468,5 +468,74 @@ export function matmulViz(canvas, buttons = {}) {
 
     return true;
   }
+
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 2) return; // Early return if more than two touch points
+
+    const touch = e.touches[0]; // Consider only the first touch point
+    const pos = getTouchPos(touch);
+    const [gridX, gridY] = calculateGridCoords(pos);
+    const key = gridX + ',' + gridY;
+
+    handleResizing(pos, dataMatrix, e);
+    handleResizing(pos, operations, e);
+    draw(); // Redraw at every touch move if needed
+});
+
+document.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 2) return;
+
+    const touch = e.touches[0];
+    const pos = getTouchPos(touch);
+    startResizing(pos, dataMatrix);
+    startResizing(pos, operations);
+});
+
+document.addEventListener('touchend', (e) => {
+    dataMatrix.resizing = null;
+    operations.resizing = null;
+});
+
+function getTouchPos(touch) {
+    const rect = canvas.getBoundingClientRect();
+    return {
+        x: touch.clientX - rect.left,
+        y: touch.clientY - rect.top
+    };
+}
+
+function startResizing(pos, matrix) {
+    if (inBounds(matrix, pos)) {
+        if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size) &&
+            nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
+            matrix.resizing = 'nwse';
+        } else if (nearEdge(pos.y, matrix.y + matrix.rows * grid_size)) {
+            matrix.resizing = 'ns';
+        } else if (nearEdge(pos.x, matrix.x + matrix.cols * grid_size)) {
+            matrix.resizing = 'ew';
+        }
+    }
+}
+
+function handleResizing(pos, matrix, event) {
+    if (!matrix.resizing) return;
+    event.preventDefault()
+    switch (matrix.resizing) {
+        case 'ew':
+            matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
+            break;
+        case 'ns':
+            matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
+            break;
+        case 'nwse':
+            matrix.cols = Math.max(1, Math.min(5, Math.round((pos.x - matrix.x) / grid_size)));
+            matrix.rows = Math.max(1, Math.min(5, Math.round((pos.y - matrix.y) / grid_size)));
+            break;
+    }
+}
+
+function nearEdge(pos, edge) {
+    return Math.abs(pos - edge) <= grid_size / 5;
+}
 }
 
