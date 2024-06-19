@@ -35,7 +35,7 @@ P1:
 1. Fix selection flash on mobile
 1. Click on an output cell to see only all of it's up upstream dependencies
 1. Allow user to select shopper columns to calculate the whole output column
-1. Make vector outlines consistently colored (right now they start out as tranlucent white and then turn opaque white)
+1. Make vector outlines consistently colored (right now they start out as translucent white and then turn opaque white)
 1. Columns and rows when setting in data matrix are not working right. (Was wrong order in function call: trimMatrix(matrix, rows, cols) vs trimMatrix(matrix, cols, rows))
 1. Ship it!
 1. Draw fewer emoji labels when matrices are smaller
